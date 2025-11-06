@@ -10,12 +10,12 @@ class EventEmitter {
 
   off(event, listener) {
     if (!this.events[event]) return;
-    this.events[event] = this.events[event].filter(l => l !== listener);
+    this.events[event] = this.events[event].filter((l) => l !== listener);
   }
 
   emit(event, data) {
     if (!this.events[event]) return;
-    this.events[event].forEach(listener => listener(data));
+    this.events[event].forEach((listener) => listener(data));
   }
 }
 
