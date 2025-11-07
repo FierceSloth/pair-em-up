@@ -13,6 +13,15 @@
     "test": "npm run format && npm run lint:fix && npm run lint",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run format",
+      "npm run lint:fix"
+    ],
+    "*.{css,scss,md,json}": [
+      "npm run format"
+    ]
+  },
   "devDependencies": {
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
