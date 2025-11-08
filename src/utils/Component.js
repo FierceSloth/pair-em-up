@@ -23,6 +23,14 @@ export default class Component {
     this.#node.textContent = text;
   }
 
+  addClass(className) {
+    this.#node.classList.add(className);
+  }
+
+  removeClass(className) {
+    this.#node.classList.remove(className);
+  }
+
   toggleClass(className) {
     this.#node.classList.toggle(className);
   }

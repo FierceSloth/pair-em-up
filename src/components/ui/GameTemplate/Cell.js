@@ -9,6 +9,7 @@ export default class Cell extends Component {
     });
 
     this.value = value;
+    this.isDeleted = false;
 
     index = index + 1;
     const x = index % 9 === 0 ? 9 : index % 9;
@@ -24,6 +25,9 @@ export default class Cell extends Component {
     emitter.on('deleteCell', () => {
       this.deleteCell();
     });
+    this.addListener('click', () => {
+      emitter.emit('cellClick', this);
+    });
   }
 
   initCell(arr) {
@@ -35,6 +39,8 @@ export default class Cell extends Component {
 
   deleteCell() {
     this.node.textContent = '';
+    this.value = null;
+    this.isDeleted = true;
     this.node.classList.add('cell--deleted');
   }
 }
