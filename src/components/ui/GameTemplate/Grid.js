@@ -2,16 +2,12 @@ import Component from '../../../utils/Component';
 import { emitter } from '../../../utils/emmiter';
 import Cell from './Cell';
 
-const CLASSIC_GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 1, 9];
-// const CLASSIC_GRID = Array(46 ).fill(1)
-
 export default class Grid extends Component {
   constructor() {
     super({
       className: 'game__grid',
     });
 
-    this.columns = 9;
     this.mode = 'classic';
     this.cells = [];
     this.score = 0;
@@ -24,6 +20,11 @@ export default class Grid extends Component {
     });
     emitter.on('cellClick', (cell) => {
       this.selectCard(cell);
+    });
+    emitter.on('cancel', () => {
+      if (this.history.length < 1) return;
+      this.removeGrid();
+      this.createGrid(this.history.pop());
     });
   }
 
@@ -52,6 +53,9 @@ export default class Grid extends Component {
     const valueResult = this.checkValueMatch(first, second);
 
     if (coordResult && valueResult) {
+      const copy = this.cells.map((cell) => cell.value);
+      this.history.push(copy);
+
       first.deleteCell();
       second.deleteCell();
 
@@ -157,9 +161,22 @@ export default class Grid extends Component {
     return this.cells[index - 1];
   }
 
-  createBasicGrid() {
-    this.cells = CLASSIC_GRID.map((value, index) => {
+  removeGrid() {
+    this.cells.forEach((cell) => {
+      cell.destroyCell();
+    });
+    this.cells = [];
+  }
+
+  createGrid(gridArr) {
+    this.cells = gridArr.map((value, index) => {
       const cell = new Cell({ value: value, index: index });
+
+      if (value === null) {
+        cell.addClass('cell--deleted');
+        cell.isDeleted = true;
+      }
+
       this.append(cell);
       return cell;
     });

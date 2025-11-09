@@ -19,28 +19,27 @@ export default class Cell extends Component {
 
     this.node.setAttribute('data-pos', `x:${this.xPos} y:${this.yPos}`);
 
-    emitter.on('initGrid', (cells) => {
-      this.initCell(cells);
-    });
-    emitter.on('deleteCell', () => {
-      this.deleteCell();
-    });
-    this.addListener('click', () => {
-      emitter.emit('cellClick', this);
-    });
-  }
+    this.deleteCell = this.deleteCell.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
-  initCell(arr) {
-    const index = arr.indexOf(this.node);
-    const x = index % 9;
-    this.xPos = x === 0 ? 9 : x;
-    this.yPos = Math.ceil(index / 9);
+    emitter.on('deleteCell', this.deleteCell);
+    this.node.addEventListener('click', this.handleClick);
   }
 
   deleteCell() {
     this.node.textContent = '';
     this.value = null;
     this.isDeleted = true;
-    this.node.classList.add('cell--deleted');
+    this.addClass('cell--deleted');
+  }
+
+  handleClick() {
+    emitter.emit('cellClick', this);
+  }
+
+  destroyCell() {
+    emitter.off('deleteCell', this.deleteCell);
+    this.node.removeEventListener('click', this.handleClick);
+    super.destroy();
   }
 }
