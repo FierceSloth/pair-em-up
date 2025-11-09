@@ -57,8 +57,8 @@
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 0 2px 1px rgba(255, 255, 255, 0.3);
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
@@ -69,13 +69,12 @@
     }
 
     &.cell--active {
-      background: rgba(0, 4, 255, 0.075);
-      border: 1px solid rgba(1, 63, 145, 0.822);
+      border: 1px solid rgb(0, 123, 255);
       box-shadow:
-        0 8px 32px rgba(17, 0, 255, 0.082),
-        inset 0 2px 0 rgba(4, 45, 121, 0.959),
-        inset 0 -1px 0 rgb(0, 26, 255),
-        inset 0 0 6px 3px rgba(2, 6, 255, 0.26);
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 8px 20px rgba(0, 0, 0, 0.08),
+        inset 0 2px 0 rgb(134, 172, 252),
+        inset 0 -3px 0 rgba(23, 46, 247, 0.1);
     }
 
     &.cell--error {
@@ -86,7 +85,7 @@
     }
 
     &.cell--deleted {
-      background: transparent;
+      opacity: 0;
 
       &:hover {
         transform: none;
@@ -98,10 +97,12 @@
 
 @keyframes flash-error {
   50% {
-    background: rgba(255, 0, 0, 0.15);
-    border: 1px solid rgba(255, 0, 0, 0.8);
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgb(250, 77, 77);
     box-shadow:
-      0 8px 32px rgba(255, 0, 0, 0.082),
-      inset 0 2px 0 rgba(121, 4, 4, 0.959);
+      0 0 3px rgba(197, 14, 0, 0.4),
+      0 8px 20px rgba(0, 0, 0, 0.05),
+      inset 0 2px 0 rgb(255, 110, 110),
+      inset 0 -3px 0 rgba(247, 38, 23, 0.1);
   }
 }
