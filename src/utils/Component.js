@@ -14,7 +14,7 @@ export default class Component {
 
     if (children) {
       children.forEach((child) => {
-        node.append(child);
+        node.append(child.node);
       });
     }
   }

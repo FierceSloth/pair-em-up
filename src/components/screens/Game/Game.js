@@ -3,6 +3,7 @@ import { emitter } from '../../../utils/emmiter';
 
 import Button from '../../ui/Button/Button';
 import GameTemplate from '../../ui/GameTemplate/GameTemplate';
+import ToolsManager from '../../ui/GameTemplate/ToolsManager';
 
 export default class Game extends Component {
   constructor() {
@@ -21,11 +22,19 @@ export default class Game extends Component {
       btnText: 'Go Back',
       onClick: () => emitter.emit('showScreen', 'menu'),
     });
-    const undoBtn = new Button({
-      btnText: 'Cancel',
-      onClick: () => emitter.emit('undo', ''),
-    });
     const gameTemplate = new GameTemplate();
-    this.appendChildren([gameTitle, backBtn, gameTemplate, undoBtn]);
+
+    //* =========== Game Panel =============
+
+    const tools = new ToolsManager();
+
+    const optionsPanel = new Component(
+      {
+        className: 'game__options',
+      },
+      tools
+    );
+
+    this.appendChildren([gameTitle, backBtn, gameTemplate, optionsPanel]);
   }
 }

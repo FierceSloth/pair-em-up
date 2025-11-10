@@ -22,13 +22,15 @@ export default class Grid extends Component {
     emitter.on('cellClick', (cell) => {
       this.selectCard(cell);
     });
-    emitter.on('undo', () => {
-      if (this.history.length < 1 || this.isUndoUsed) return;
-      this.removeGrid();
-      this.createGrid(this.history.pop());
-      this.isUndoUsed = true; // Под вопросом нужно ли так
+    emitter.on('tools:undo', () => {
+      this.toolsUndo();
+    });
+    emitter.on('tools:add', () => {
+      // ...
     });
   }
+
+  //* ============ Basic cards methods =============
 
   selectCard(cell) {
     if (this.firstCard === cell || this.secondCard === cell || cell.isDeleted) {
@@ -140,6 +142,41 @@ export default class Grid extends Component {
     return false;
   }
 
+  //* ========= Grid management methods ============
+
+  removeGrid() {
+    this.cells.forEach((cell) => {
+      cell.destroyCell();
+    });
+    this.cells = [];
+  }
+
+  createGrid(gridArr) {
+    this.cells = gridArr.map((value, index) => {
+      const cell = new Cell({ value: value, index: index });
+
+      if (value === null) {
+        cell.addClass('cell--deleted');
+        cell.isDeleted = true;
+      }
+
+      this.append(cell);
+      return cell;
+    });
+  }
+
+  //* ============ Tools methods ===============
+
+  toolsUndo() {
+    if (this.history.length < 1 || this.isUndoUsed) return;
+    this.removeGrid();
+    this.resetActiveCards();
+    this.createGrid(this.history.pop());
+    this.isUndoUsed = true;
+  }
+
+  //* ============ Supporting methods ===========
+
   triggerAnimation(el, cls) {
     el.addClass(cls);
     el.addListener(
@@ -162,26 +199,5 @@ export default class Grid extends Component {
   getCellByPos(x, y) {
     const index = (y - 1) * 9 + x;
     return this.cells[index - 1];
-  }
-
-  removeGrid() {
-    this.cells.forEach((cell) => {
-      cell.destroyCell();
-    });
-    this.cells = [];
-  }
-
-  createGrid(gridArr) {
-    this.cells = gridArr.map((value, index) => {
-      const cell = new Cell({ value: value, index: index });
-
-      if (value === null) {
-        cell.addClass('cell--deleted');
-        cell.isDeleted = true;
-      }
-
-      this.append(cell);
-      return cell;
-    });
   }
 }
