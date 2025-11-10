@@ -21,11 +21,11 @@ export default class Game extends Component {
       btnText: 'Go Back',
       onClick: () => emitter.emit('showScreen', 'menu'),
     });
-    const cancelBtn = new Button({
+    const undoBtn = new Button({
       btnText: 'Cancel',
-      onClick: () => emitter.emit('cancel', ''),
+      onClick: () => emitter.emit('undo', ''),
     });
     const gameTemplate = new GameTemplate();
-    this.appendChildren([gameTitle, backBtn, gameTemplate, cancelBtn]);
+    this.appendChildren([gameTitle, backBtn, gameTemplate, undoBtn]);
   }
 }

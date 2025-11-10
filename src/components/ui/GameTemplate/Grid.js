@@ -13,6 +13,7 @@ export default class Grid extends Component {
     this.score = 0;
     this.firstCard = null;
     this.secondCard = null;
+    this.isUndoUsed = false;
     this.history = [];
 
     emitter.on('modeSwitch', (mode) => {
@@ -21,10 +22,11 @@ export default class Grid extends Component {
     emitter.on('cellClick', (cell) => {
       this.selectCard(cell);
     });
-    emitter.on('cancel', () => {
-      if (this.history.length < 1) return;
+    emitter.on('undo', () => {
+      if (this.history.length < 1 || this.isUndoUsed) return;
       this.removeGrid();
       this.createGrid(this.history.pop());
+      this.isUndoUsed = true; // Под вопросом нужно ли так
     });
   }
 
@@ -55,6 +57,7 @@ export default class Grid extends Component {
     if (coordResult && valueResult) {
       const copy = this.cells.map((cell) => cell.value);
       this.history.push(copy);
+      this.isUndoUsed = false;
 
       first.deleteCell();
       second.deleteCell();
