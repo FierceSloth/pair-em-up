@@ -1,6 +1,7 @@
 import Component from '../../../utils/Component';
 import { emitter } from '../../../utils/emmiter';
 import Cell from './Cell';
+import { shuffleArr } from '../../../utils/random';
 
 export default class Grid extends Component {
   constructor() {
@@ -26,7 +27,10 @@ export default class Grid extends Component {
       this.toolsUndo();
     });
     emitter.on('tools:add', () => {
-      // ...
+      this.toolsAdd();
+    });
+    emitter.on('tools:shuffle', () => {
+      this.toolsShuffle();
     });
   }
 
@@ -57,9 +61,7 @@ export default class Grid extends Component {
     const valueResult = this.checkValueMatch(first, second);
 
     if (coordResult && valueResult) {
-      const copy = this.cells.map((cell) => cell.value);
-      this.history.push(copy);
-      this.isUndoUsed = false;
+      this.saveGrid();
 
       first.deleteCell();
       second.deleteCell();
@@ -151,9 +153,10 @@ export default class Grid extends Component {
     this.cells = [];
   }
 
-  createGrid(gridArr) {
-    this.cells = gridArr.map((value, index) => {
-      const cell = new Cell({ value: value, index: index });
+  createGrid(gridArr, startIndex = 0) {
+    const result = gridArr.map((value, index) => {
+      const trueIndex = index + startIndex;
+      const cell = new Cell({ value: value, index: trueIndex });
 
       if (value === null) {
         cell.addClass('cell--deleted');
@@ -163,6 +166,7 @@ export default class Grid extends Component {
       this.append(cell);
       return cell;
     });
+    this.cells.push(...result);
   }
 
   //* ============ Tools methods ===============
@@ -173,6 +177,35 @@ export default class Grid extends Component {
     this.resetActiveCards();
     this.createGrid(this.history.pop());
     this.isUndoUsed = true;
+  }
+
+  toolsAdd() {
+    this.saveGrid();
+    const toAdd = this.cells.filter((cell) => cell.value).map((cell) => cell.value);
+    const startIndex = this.cells.length;
+    this.createGrid(toAdd, startIndex);
+  }
+
+  toolsShuffle() {
+    this.saveGrid();
+    const nonNullCells = this.cells.filter((cell) => cell.value !== null);
+    const nonNullValues = nonNullCells.map((cell) => cell.value);
+    shuffleArr(nonNullValues);
+
+    let shuffleIndex = 0;
+    const result = this.cells.map((cell) => {
+      if (cell.value === null) {
+        return null;
+      } else {
+        const shuffledValue = nonNullValues[shuffleIndex];
+        shuffleIndex += 1;
+        return shuffledValue;
+      }
+    });
+
+    this.removeGrid();
+    this.resetActiveCards();
+    this.createGrid(result);
   }
 
   //* ============ Supporting methods ===========
@@ -194,6 +227,12 @@ export default class Grid extends Component {
 
     this.secondCard = null;
     this.firstCard = null;
+  }
+
+  saveGrid() {
+    const copy = this.cells.map((cell) => cell.value);
+    this.history.push(copy);
+    this.isUndoUsed = false;
   }
 
   getCellByPos(x, y) {

@@ -17,7 +17,11 @@ export default class ToolsManager extends Component {
       btnText: 'Add Numbers',
       onClick: () => emitter.emit('tools:add', ''),
     });
+    const shuffleBtn = new Button({
+      btnText: 'Shuffle',
+      onClick: () => emitter.emit('tools:shuffle', ''),
+    });
 
-    this.appendChildren([undoBtn, addBtn]);
+    this.appendChildren([undoBtn, addBtn, shuffleBtn]);
   }
 }
