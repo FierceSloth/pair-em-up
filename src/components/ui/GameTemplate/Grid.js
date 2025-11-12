@@ -12,10 +12,20 @@ export default class Grid extends Component {
     this.mode = 'classic';
     this.cells = [];
     this.score = 0;
+    this.tools = {
+      add: 10,
+      shuffle: 5,
+      eraser: 5,
+    };
+
     this.firstCard = null;
     this.secondCard = null;
     this.isUndoUsed = false;
-    this.history = [];
+
+    this.history = {
+      grid: [],
+      tools: [],
+    };
 
     emitter.on('modeSwitch', (mode) => {
       this.mode = mode;
@@ -183,22 +193,38 @@ export default class Grid extends Component {
   //* ============ Tools methods ===============
 
   toolsUndo() {
-    if (this.history.length < 1 || this.isUndoUsed) return;
+    if (this.history.grid.length < 1 || this.isUndoUsed) return;
+    this.tools = this.history.tools.pop();
+    this.updateButtons();
+
     this.removeGrid();
     this.resetActiveCards();
-    this.createGrid(this.history.pop());
+    this.createGrid(this.history.grid.pop());
     this.isUndoUsed = true;
   }
 
   toolsAdd() {
+    if (this.tools.add < 0) {
+      return;
+    }
+
     this.saveGrid();
+    this.saveTools();
     const toAdd = this.cells.filter((cell) => cell.value).map((cell) => cell.value);
     const startIndex = this.cells.length;
     this.createGrid(toAdd, startIndex);
+
+    this.tools.add -= 1;
+    this.updateButtons();
   }
 
   toolsShuffle() {
+    if (this.tools.shuffle < 0) {
+      return;
+    }
+
     this.saveGrid();
+    this.saveTools();
     const nonNullCells = this.cells.filter((cell) => cell.value !== null);
     const nonNullValues = nonNullCells.map((cell) => cell.value);
     shuffleArr(nonNullValues);
@@ -214,16 +240,28 @@ export default class Grid extends Component {
       }
     });
 
+    this.tools.shuffle -= 1;
+    this.updateButtons();
+
     this.removeGrid();
     this.resetActiveCards();
     this.createGrid(result);
   }
 
   toolsEraser() {
+    if (this.tools.eraser < 0) {
+      return;
+    }
+
     if (this.firstCard) {
       this.saveGrid();
+      this.saveTools();
+
       this.firstCard.deleteCell();
       this.resetActiveCards();
+
+      this.tools.eraser -= 1;
+      this.updateButtons();
     }
   }
 
@@ -251,8 +289,17 @@ export default class Grid extends Component {
 
   saveGrid() {
     const copy = this.cells.map((cell) => cell.value);
-    this.history.push(copy);
+    this.history.grid.push(copy);
     this.isUndoUsed = false;
+  }
+
+  saveTools() {
+    const copy = { ...this.tools };
+    this.history.tools.push(copy);
+  }
+
+  updateButtons() {
+    emitter.emit('button:update', this.tools);
   }
 
   getCellByPos(x, y) {
