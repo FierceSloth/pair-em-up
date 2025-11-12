@@ -32,18 +32,29 @@ export default class Grid extends Component {
     emitter.on('tools:shuffle', () => {
       this.toolsShuffle();
     });
+    emitter.on('tools:eraser', () => {
+      this.toolsEraser();
+    });
   }
 
   //* ============ Basic cards methods =============
 
   selectCard(cell) {
-    if (this.firstCard === cell || this.secondCard === cell || cell.isDeleted) {
+    if (this.secondCard === cell || cell.isDeleted) {
+      return;
+    }
+
+    if (this.firstCard === cell) {
+      this.firstCard.removeClass('cell--active');
+      this.firstCard = null;
+      emitter.emit('card:removed', '');
       return;
     }
 
     if (!this.firstCard) {
       this.firstCard = cell;
       cell.addClass('cell--active');
+      emitter.emit('card:selected', '');
       return;
     }
 
@@ -208,6 +219,14 @@ export default class Grid extends Component {
     this.createGrid(result);
   }
 
+  toolsEraser() {
+    if (this.firstCard) {
+      this.saveGrid();
+      this.firstCard.deleteCell();
+      this.resetActiveCards();
+    }
+  }
+
   //* ============ Supporting methods ===========
 
   triggerAnimation(el, cls) {
@@ -225,6 +244,7 @@ export default class Grid extends Component {
     if (this.firstCard) this.firstCard.removeClass('cell--active');
     if (this.secondCard) this.secondCard.removeClass('cell--active');
 
+    emitter.emit('card:removed', '');
     this.secondCard = null;
     this.firstCard = null;
   }
