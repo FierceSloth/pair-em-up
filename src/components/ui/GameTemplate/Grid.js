@@ -194,8 +194,11 @@ export default class Grid extends Component {
 
   toolsUndo() {
     if (this.history.grid.length < 1 || this.isUndoUsed) return;
-    this.tools = this.history.tools.pop();
-    this.updateButtons();
+
+    if (this.tools.length > 0) {
+      this.tools = this.history.tools.pop();
+      this.updateButtons();
+    }
 
     this.removeGrid();
     this.resetActiveCards();
