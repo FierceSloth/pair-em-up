@@ -1,42 +1,28 @@
+@use '../../../styles/glassmorphism' as *;
+
+.game__template {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .game__grid {
+  @extend %glass-base;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 6px 3px rgba(255, 255, 255, 0.4);
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-gap: 7px;
   padding: 30px;
-  background: rgba(231, 231, 231, 0.07);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border-radius: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 0 6px 3px rgba(255, 255, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent, rgba(255, 255, 255, 0.3));
-  }
 
   .grid--cell {
+    @extend %glass-button;
+
     width: 90px;
     height: 90px;
     font-size: 36px;
@@ -44,24 +30,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-
-    background: rgba(231, 231, 231, 0);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
 
     &:hover {
       background: rgba(255, 255, 255, 0.02);
@@ -92,6 +60,108 @@
         background: rgba(0, 0, 0, 0);
       }
     }
+  }
+}
+
+.game__options {
+  @extend %glass-base;
+
+  background: rgba(231, 231, 231, 0.07);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.233),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 2px 1px rgba(255, 255, 255, 0.158);
+
+  border-radius: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+.panel__tools-wrapper {
+  display: flex;
+  gap: 5px;
+
+  button {
+    all: unset;
+    position: relative;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    width: 80px;
+    transition: all 0.2s;
+
+    &::before {
+      content: '';
+      top: 0;
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+
+      width: 45px;
+      height: 45px;
+    }
+
+    &:nth-child(1)::before {
+      content: '⏳️';
+    }
+    &:nth-child(2)::before {
+      content: '🧩';
+    }
+    &:nth-child(3)::before {
+      content: '🎲';
+    }
+    &:nth-child(4)::before {
+      content: '🧹';
+    }
+  }
+
+  button[disabled] {
+    opacity: 0.4;
+  }
+}
+
+.panel__score-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 30px;
+  font-size: 18px;
+  font-family: 'Exo 2', sans-serif;
+
+  .score-text {
+    @extend %glass-base;
+
+    background: rgba(231, 231, 231, 0.07);
+
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.233),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 2px 1px rgba(255, 255, 255, 0.158);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 25%;
+    height: 60px;
+  }
+
+  .score__current-score {
+    font-weight: 600;
+    font-size: 20px;
   }
 }
 

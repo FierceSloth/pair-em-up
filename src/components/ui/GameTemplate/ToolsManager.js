@@ -14,7 +14,7 @@ export default class ToolsManager extends Component {
       onClick: () => emitter.emit('tools:undo', ''),
     });
     const addBtn = new Button({
-      btnText: 'Add Numbers (10)',
+      btnText: 'Add (10)',
       onClick: () => emitter.emit('tools:add', ''),
     });
     const shuffleBtn = new Button({
@@ -39,7 +39,7 @@ export default class ToolsManager extends Component {
     });
 
     emitter.on('button:update', (tools) => {
-      this.updateToolButton(addBtn, 'Add Numbers', tools.add);
+      this.updateToolButton(addBtn, 'Add', tools.add);
       this.updateToolButton(shuffleBtn, 'Shuffle', tools.shuffle);
       this.updateToolButton(eraserBtn, 'Eraser', tools.eraser);
     });

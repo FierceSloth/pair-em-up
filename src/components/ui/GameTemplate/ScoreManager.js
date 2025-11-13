@@ -15,15 +15,15 @@ export default class ScoreManager extends Component {
 
     const currentMode = new Component({
       className: ['score-text', 'score__current-mode'],
-      text: 'Classic',
+      text: 'Classic Mode',
     });
     const currentScore = new Component({
       className: ['score-text', 'score__current-score'],
-      text: '0',
+      text: 'Score: 0 / 100',
     });
     const currentTime = new Component({
       className: ['score-text', 'score__current-time'],
-      text: '00:00',
+      text: 'Time: 00:00',
     });
 
     if (timerData.intervalId) {
@@ -51,9 +51,9 @@ export default class ScoreManager extends Component {
   }
 
   updateTimeText(minutes, seconds, text) {
-    text.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    text.textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
   updateScore(score, text) {
-    text.textContent = score;
+    text.textContent = `Score: ${score} / 100`;
   }
 }

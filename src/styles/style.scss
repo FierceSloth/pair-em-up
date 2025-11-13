@@ -1,4 +1,5 @@
 @use './main';
+@use './glassmorphism' as effect;
 
 @use '../components/screens/Game/game';
 @use '../components/screens/Menu/menu';

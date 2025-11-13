@@ -20,8 +20,7 @@ body {
   min-height: 100vh;
   color: #ffffff;
 
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .container {
@@ -36,10 +35,10 @@ h1 {
   text-shadow:
     0 0 10px rgba(255, 255, 255, 0.4),
     0 0 20px rgba(255, 255, 255, 0.2);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 3em;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 4em;
   letter-spacing: -0.02em;
+  margin: 30px 0;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
