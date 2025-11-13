@@ -25,6 +25,7 @@ export default class Grid extends Component {
     this.history = {
       grid: [],
       tools: [],
+      score: [0],
     };
 
     emitter.on('modeSwitch', (mode) => {
@@ -83,6 +84,9 @@ export default class Grid extends Component {
 
     if (coordResult && valueResult) {
       this.saveGrid();
+
+      this.score += valueResult;
+      emitter.emit('score:change', this.score);
 
       first.deleteCell();
       second.deleteCell();
@@ -144,21 +148,18 @@ export default class Grid extends Component {
 
   checkValueMatch(first, second) {
     if (first.value === 5 && second.value === 5) {
-      this.score += 3;
       console.log('value correct +3');
-      return true;
+      return 3;
     }
 
     if (first.value === second.value) {
-      this.score += 1;
       console.log('value correct +1');
-      return true;
+      return 1;
     }
 
     if (first.value + second.value === 10) {
-      this.score += 2;
       console.log('value correct +2');
-      return true;
+      return 2;
     }
 
     console.log('value incorrect');
@@ -195,10 +196,13 @@ export default class Grid extends Component {
   toolsUndo() {
     if (this.history.grid.length < 1 || this.isUndoUsed) return;
 
-    if (this.tools.length > 0) {
+    if (this.history.tools.length > 0) {
       this.tools = this.history.tools.pop();
       this.updateButtons();
     }
+
+    this.score = this.history.score.pop();
+    emitter.emit('score:change', this.score);
 
     this.removeGrid();
     this.resetActiveCards();
@@ -293,6 +297,7 @@ export default class Grid extends Component {
   saveGrid() {
     const copy = this.cells.map((cell) => cell.value);
     this.history.grid.push(copy);
+    this.history.score.push(this.score);
     this.isUndoUsed = false;
   }
 

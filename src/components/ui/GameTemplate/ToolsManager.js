@@ -28,23 +28,31 @@ export default class ToolsManager extends Component {
 
     eraserBtn.node.disabled = true;
     emitter.on('card:selected', () => {
-      eraserBtn.node.disabled = false;
+      if (!eraserBtn.isEnded) {
+        eraserBtn.node.disabled = false;
+      }
     });
     emitter.on('card:removed', () => {
-      eraserBtn.node.disabled = true;
+      if (!eraserBtn.isEnded) {
+        eraserBtn.node.disabled = true;
+      }
     });
 
     emitter.on('button:update', (tools) => {
-      if (tools.add === 0) addBtn.node.disabled = true;
-      if (tools.shuffle === 0) shuffleBtn.node.disabled = true;
-      if (tools.eraser === 0) eraserBtn.node.disabled = true;
-
-      addBtn.node.textContent = `Add Numbers (${tools.add})`;
-      10;
-      shuffleBtn.node.textContent = `Shuffle (${tools.shuffle})`;
-      eraserBtn.node.textContent = `Eraser (${tools.eraser})`;
+      this.updateToolButton(addBtn, 'Add Numbers', tools.add);
+      this.updateToolButton(shuffleBtn, 'Shuffle', tools.shuffle);
+      this.updateToolButton(eraserBtn, 'Eraser', tools.eraser);
     });
 
     this.appendChildren([undoBtn, addBtn, shuffleBtn, eraserBtn]);
+  }
+
+  updateToolButton(button, tool, count) {
+    button.node.textContent = `${tool} (${count})`;
+    button.node.disabled = count === 0;
+
+    if (tool === 'Eraser') {
+      button.isEnded = count === 0;
+    }
   }
 }

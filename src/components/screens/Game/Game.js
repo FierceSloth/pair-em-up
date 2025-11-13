@@ -3,7 +3,6 @@ import { emitter } from '../../../utils/emmiter';
 
 import Button from '../../ui/Button/Button';
 import GameTemplate from '../../ui/GameTemplate/GameTemplate';
-import ToolsManager from '../../ui/GameTemplate/ToolsManager';
 
 export default class Game extends Component {
   constructor() {
@@ -24,17 +23,6 @@ export default class Game extends Component {
     });
     const gameTemplate = new GameTemplate();
 
-    //* =========== Game Panel =============
-
-    const tools = new ToolsManager();
-
-    const optionsPanel = new Component(
-      {
-        className: 'game__options',
-      },
-      tools
-    );
-
-    this.appendChildren([gameTitle, backBtn, gameTemplate, optionsPanel]);
+    this.appendChildren([gameTitle, backBtn, gameTemplate]);
   }
 }
