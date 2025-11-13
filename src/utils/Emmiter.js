@@ -17,6 +17,11 @@ class EventEmitter {
     if (!this.events[event]) return;
     this.events[event].forEach((listener) => listener(data));
   }
+
+  clear() {
+    this.events = {};
+  }
 }
 
 export const emitter = new EventEmitter();
+export const appEmitter = new EventEmitter();

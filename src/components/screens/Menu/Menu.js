@@ -1,5 +1,5 @@
 import Component from '../../../utils/Component';
-import { emitter } from '../../../utils/emmiter';
+import { appEmitter } from '../../../utils/emmiter';
 
 import Button from '../../ui/Button/Button';
 
@@ -21,7 +21,7 @@ export default class Menu extends Component {
       className: 'menu__buttons-container',
     });
     const btnsOptions = [
-      { btnText: 'Play', ourClass: ['menu__button'], onClick: () => emitter.emit('showScreen', 'game') },
+      { btnText: 'Play', ourClass: ['menu__button'], onClick: () => appEmitter.emit('showScreen', 'game') },
       { btnText: 'Settings', ourClass: ['menu__button'] },
       { btnText: 'Results', ourClass: ['menu__button'] },
     ];

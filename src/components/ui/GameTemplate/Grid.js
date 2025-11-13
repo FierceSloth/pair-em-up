@@ -1,5 +1,5 @@
 import Component from '../../../utils/Component';
-import { emitter } from '../../../utils/emmiter';
+import { appEmitter, emitter } from '../../../utils/emmiter';
 import Cell from './Cell';
 import { shuffleArr } from '../../../utils/random';
 
@@ -18,6 +18,7 @@ export default class Grid extends Component {
       eraser: 5,
     };
 
+    console.log(emitter);
     this.firstCard = null;
     this.secondCard = null;
     this.isUndoUsed = false;
@@ -28,7 +29,7 @@ export default class Grid extends Component {
       score: [0],
     };
 
-    emitter.on('modeSwitch', (mode) => {
+    appEmitter.on('modeSwitch', (mode) => {
       this.mode = mode;
     });
     emitter.on('cellClick', (cell) => {

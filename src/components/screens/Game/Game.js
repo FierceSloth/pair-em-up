@@ -1,5 +1,5 @@
 import Component from '../../../utils/Component';
-import { emitter } from '../../../utils/emmiter';
+import { appEmitter } from '../../../utils/emmiter';
 
 import Button from '../../ui/Button/Button';
 import GameTemplate from '../../ui/GameTemplate/GameTemplate';
@@ -19,7 +19,7 @@ export default class Game extends Component {
     });
     const backBtn = new Button({
       btnText: 'Go Back',
-      onClick: () => emitter.emit('showScreen', 'menu'),
+      onClick: () => appEmitter.emit('showScreen', 'menu'),
     });
     const gameTemplate = new GameTemplate();
 

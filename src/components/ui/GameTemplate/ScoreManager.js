@@ -26,6 +26,13 @@ export default class ScoreManager extends Component {
       text: '00:00',
     });
 
+    if (timerData.intervalId) {
+      clearInterval(timerData.intervalId);
+      timerData.intervalId = null;
+      timerData.minutes = 0;
+      timerData.seconds = 0;
+    }
+
     timerData.intervalId = setInterval(() => {
       timerData.seconds += 1;
       if (timerData.seconds >= 60) {
