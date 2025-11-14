@@ -45,6 +45,15 @@
         inset 0 -3px 0 rgba(23, 46, 247, 0.1);
     }
 
+    &.cell--hinits {
+      border: 1px solid rgb(255, 255, 255);
+      box-shadow:
+        0 0 16px rgb(255, 255, 255),
+        0 2px 18px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgb(255, 255, 255),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.45);
+    }
+
     &.cell--error {
       animation-name: flash-error;
       animation-duration: 0.5s;
@@ -115,15 +124,21 @@
     }
 
     &:nth-child(1)::before {
-      content: '⏳️';
+      content: attr(data-message);
     }
     &:nth-child(2)::before {
-      content: '🧩';
+      content: '⏳️';
     }
     &:nth-child(3)::before {
-      content: '🎲';
+      content: '🧩';
     }
     &:nth-child(4)::before {
+      content: '💡';
+    }
+    &:nth-child(5)::before {
+      content: '🎲';
+    }
+    &:nth-child(6)::before {
       content: '🧹';
     }
   }

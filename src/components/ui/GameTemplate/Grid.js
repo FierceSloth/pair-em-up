@@ -2,6 +2,7 @@ import Component from '../../../utils/Component';
 import { appEmitter, emitter } from '../../../utils/emmiter';
 import Cell from './Cell';
 import { shuffleArr } from '../../../utils/random';
+import { timerData } from './ScoreManager';
 
 export default class Grid extends Component {
   constructor() {
@@ -14,11 +15,11 @@ export default class Grid extends Component {
     this.score = 0;
     this.tools = {
       add: 10,
+      hinits: 5,
       shuffle: 5,
       eraser: 5,
     };
 
-    console.log(emitter);
     this.firstCard = null;
     this.secondCard = null;
     this.isUndoUsed = false;
@@ -28,6 +29,10 @@ export default class Grid extends Component {
       tools: [],
       score: [0],
     };
+
+    setTimeout(() => {
+      this.calculateAvailableMoves();
+    }, 100);
 
     appEmitter.on('modeSwitch', (mode) => {
       this.mode = mode;
@@ -40,6 +45,9 @@ export default class Grid extends Component {
     });
     emitter.on('tools:add', () => {
       this.toolsAdd();
+    });
+    emitter.on('tools:hinits', () => {
+      this.toolsHinits();
     });
     emitter.on('tools:shuffle', () => {
       this.toolsShuffle();
@@ -93,6 +101,8 @@ export default class Grid extends Component {
       second.deleteCell();
 
       this.resetActiveCards();
+      this.calculateAvailableMoves();
+      this.checkGameEnd();
 
       return true;
     }
@@ -110,7 +120,6 @@ export default class Grid extends Component {
     let result = true;
 
     if (Math.abs(x1 - x2) + Math.abs(y1 - y2) === 1) {
-      console.log('simple exit');
       return true;
     }
 
@@ -121,11 +130,9 @@ export default class Grid extends Component {
       for (let y = minY + 1; y < maxY; y += 1) {
         let cell = this.getCellByPos(x1, y);
         if (cell.value) {
-          console.log('position incorrect');
           result = false;
           break;
         }
-        console.log('position correct');
       }
     } else {
       const firstIndex = this.cells.indexOf(first);
@@ -136,11 +143,9 @@ export default class Grid extends Component {
       for (let i = smaller + 1; i < larger; i += 1) {
         let cell = this.cells[i];
         if (cell.value) {
-          console.log('position incorrect');
           result = false;
           break;
         }
-        console.log('position correct');
       }
     }
 
@@ -149,22 +154,38 @@ export default class Grid extends Component {
 
   checkValueMatch(first, second) {
     if (first.value === 5 && second.value === 5) {
-      console.log('value correct +3');
       return 3;
     }
 
     if (first.value === second.value) {
-      console.log('value correct +1');
       return 1;
     }
 
     if (first.value + second.value === 10) {
-      console.log('value correct +2');
       return 2;
     }
 
-    console.log('value incorrect');
     return false;
+  }
+
+  checkGameEnd() {
+    const { add, shuffle, eraser } = this.tools;
+    const activeCell = this.cells.filter((cell) => !cell.isDeleted);
+
+    if (activeCell.length === 0 || this.score >= 100) {
+      appEmitter.emit('game:win', this.getGameState());
+      console.log('win');
+      return true;
+    }
+
+    const movesResult = this.calculateAvailableMoves() === 0 && add + shuffle + eraser === 0;
+    const limitResult = this.cells.length > 50 * 9;
+
+    if (movesResult || limitResult) {
+      appEmitter.emit('game:loss', this.getGameState());
+      console.log('lose');
+      return false;
+    }
   }
 
   //* ========= Grid management methods ============
@@ -208,6 +229,7 @@ export default class Grid extends Component {
     this.removeGrid();
     this.resetActiveCards();
     this.createGrid(this.history.grid.pop());
+    this.calculateAvailableMoves();
     this.isUndoUsed = true;
   }
 
@@ -224,6 +246,29 @@ export default class Grid extends Component {
 
     this.tools.add -= 1;
     this.updateButtons();
+    this.calculateAvailableMoves();
+    this.checkGameEnd();
+  }
+
+  toolsHinits() {
+    if (this.tools.hinits < 0) {
+      return;
+    }
+
+    const hint = this.calculateAvailableMoves(true);
+
+    if (hint) {
+      hint.first.addClass('cell--hinits');
+      hint.second.addClass('cell--hinits');
+
+      this.tools.hinits -= 1;
+      this.updateButtons();
+
+      setTimeout(() => {
+        hint.first.removeClass('cell--hinits');
+        hint.second.removeClass('cell--hinits');
+      }, 500);
+    }
   }
 
   toolsShuffle() {
@@ -254,6 +299,8 @@ export default class Grid extends Component {
     this.removeGrid();
     this.resetActiveCards();
     this.createGrid(result);
+    this.calculateAvailableMoves();
+    this.checkGameEnd();
   }
 
   toolsEraser() {
@@ -270,6 +317,8 @@ export default class Grid extends Component {
 
       this.tools.eraser -= 1;
       this.updateButtons();
+      this.calculateAvailableMoves();
+      this.checkGameEnd();
     }
   }
 
@@ -314,5 +363,61 @@ export default class Grid extends Component {
   getCellByPos(x, y) {
     const index = (y - 1) * 9 + x;
     return this.cells[index - 1];
+  }
+
+  getGameState() {
+    const { cells, history, tools } = this;
+    const { minutes, seconds } = timerData;
+
+    return {
+      cells,
+      history,
+      tools,
+      minutes,
+      seconds,
+    };
+  }
+
+  calculateAvailableMoves(returnFirstHint = false) {
+    let availableMoves = 0;
+    let len = this.cells.length;
+
+    for (let i = 0; i < len; i += 1) {
+      const first = this.cells[i];
+
+      if (first.isDeleted) {
+        continue;
+      }
+
+      for (let j = i + 1; j < len; j += 1) {
+        const second = this.cells[j];
+
+        if (second.isDeleted) {
+          continue;
+        }
+
+        if (availableMoves > 6) {
+          break;
+        }
+
+        const coordResult = this.checkCoordMatch(first, second);
+        const valueResult = this.checkValueMatch(first, second);
+
+        if (coordResult && valueResult) {
+          if (returnFirstHint) {
+            return { first, second };
+          }
+
+          availableMoves += 1;
+        }
+      }
+
+      if (availableMoves > 6) {
+        break;
+      }
+    }
+
+    emitter.emit('hinit:moves', availableMoves);
+    return availableMoves;
   }
 }

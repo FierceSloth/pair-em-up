@@ -7,12 +7,11 @@ body {
     radial-gradient(circle at 0% 100%, rgb(0, 0, 0), transparent 85%),
     radial-gradient(circle at 100% 0%, rgb(0, 0, 0), transparent 85%), linear-gradient(155deg, #010105 0%, #03040c 100%);
 
-  // background:
-  //   radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.5), transparent 70%),
-  //     radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.45), transparent 65%),
-  //     radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.5), transparent 60%),
-  //     radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.4), transparent 75%),
-  //   #ffffff;
+  background:
+    radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.5), transparent 70%),
+    radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.45), transparent 65%),
+    radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.5), transparent 60%),
+    radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.4), transparent 75%), #ffffff;
 
   background-repeat: no-repeat;
   background-attachment: fixed;
