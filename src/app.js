@@ -17,6 +17,8 @@ export default class App {
     if (this.currentScreen) {
       document.querySelector('.container').remove();
       document.querySelectorAll('.popup--overlay').forEach((el) => el.remove());
+      const github = document.querySelector('.github__link');
+      if (github) github.remove();
     }
 
     if (screen === 'menu') {
