@@ -267,7 +267,7 @@ export default class Grid extends Component {
       setTimeout(() => {
         hint.first.removeClass('cell--hinits');
         hint.second.removeClass('cell--hinits');
-      }, 500);
+      }, 1000);
     }
   }
 
