@@ -14,7 +14,10 @@ export default class App {
     console.log(appEmitter);
     if (this.currentScreen === screen) return;
 
-    if (this.currentScreen) document.querySelector('.container').remove();
+    if (this.currentScreen) {
+      document.querySelector('.container').remove();
+      document.querySelectorAll('.popup--overlay').forEach((el) => el.remove());
+    }
 
     if (screen === 'menu') {
       emitter.clear();

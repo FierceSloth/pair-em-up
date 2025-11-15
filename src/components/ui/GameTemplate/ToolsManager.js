@@ -21,7 +21,7 @@ export default class ToolsManager extends Component {
       onClick: () => emitter.emit('tools:add', ''),
     });
     const hinitsBtn = new Button({
-      btnText: 'Hinits(5)',
+      btnText: 'Hinits (5)',
       onClick: () => emitter.emit('tools:hinits', ''),
     });
     const shuffleBtn = new Button({
