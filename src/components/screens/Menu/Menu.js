@@ -84,7 +84,7 @@ export default class Menu extends Component {
     const githubLink = new Component({
       tag: 'a',
       className: 'github__link',
-      text: '@FierceSloth',
+      text: 'Created by @FierceSloth',
     });
     githubLink.setAttribute('href', 'https://github.com/FierceSloth');
     githubLink.setAttribute('target', '_blank');
