@@ -1,5 +1,6 @@
 @use './main';
-@use './glassmorphism' as effect;
+@use './glassmorphism';
+@use './mixins';
 
 @use '../components/ui/Button/button';
 @use '../components/ui/GameTemplate/game-template';

@@ -1,0 +1,5 @@
+@mixin fluid($property, $min, $max) {
+  $coef: calc((910 - 380) / ($max - $min));
+
+  #{$property}: clamp(#{$min}px, calc(#{$max}px - ((910px - 100vw) / #{$coef})), #{$max}px);
+}

@@ -379,10 +379,11 @@ export default class Grid extends Component {
   }
 
   getGameState() {
-    const { cells, history, tools } = this;
+    const { mode, cells, history, tools } = this;
     const { minutes, seconds } = timerData;
 
     return {
+      mode,
       cells,
       history,
       tools,

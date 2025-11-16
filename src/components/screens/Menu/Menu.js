@@ -77,6 +77,16 @@ export default class Menu extends Component {
     const btnContainer = new Component({
       className: 'menu__buttons-container',
     });
+    const currentSave = gameStorage.getCurrentSave();
+    if (currentSave) {
+      btnContainer.append(
+        new Button({
+          btnText: 'Continue',
+          ourClass: ['menu__button'],
+          onClick: () => appEmitter.emit('game:continue', currentSave),
+        })
+      );
+    }
     btnContainer.appendChildren([
       new Button({
         btnText: 'New Game',
