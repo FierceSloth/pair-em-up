@@ -1,4 +1,5 @@
 import { appEmitter, emitter } from './utils/emmiter';
+import gameStorage from './utils/gameStorage';
 
 import Menu from './components/screens/Menu/Menu';
 import Game from './components/screens/Game/Game';
@@ -8,6 +9,9 @@ export default class App {
     this.currentScreen = null;
 
     appEmitter.on('showScreen', (data) => this.showScreen(data));
+    appEmitter.on('modeSwitch', (mode) => {
+      gameStorage.setSetting('mode', mode);
+    });
   }
 
   showScreen(screen) {

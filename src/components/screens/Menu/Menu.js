@@ -1,5 +1,6 @@
 import Component from '../../../utils/Component';
 import { appEmitter } from '../../../utils/emmiter';
+import gameStorage from '../../../utils/gameStorage';
 
 import Button from '../../ui/Button/Button';
 import Popup from '../../ui/Popup/Popup';
@@ -46,6 +47,23 @@ export default class Menu extends Component {
         onClick: () => appEmitter.emit('modeSwitch', 'chaotic'),
       }),
     ];
+
+    const mode = gameStorage.getSetting('mode');
+    let selectedButton = modeButtons[0];
+
+    switch (mode) {
+      case 'classic':
+        selectedButton = modeButtons[0];
+        break;
+      case 'random':
+        selectedButton = modeButtons[1];
+        break;
+      case 'chaotic':
+        selectedButton = modeButtons[2];
+        break;
+    }
+    selectedButton.addClass('selected');
+
     modeButtons.forEach((btn) => {
       modeBtnContainer.append(btn);
       btn.addListener('click', () => {
@@ -60,11 +78,6 @@ export default class Menu extends Component {
       className: 'menu__buttons-container',
     });
     btnContainer.appendChildren([
-      new Button({
-        btnText: 'Continue Game',
-        ourClass: ['menu__button'],
-        onClick: () => appEmitter.emit('showScreen', 'game'),
-      }),
       new Button({
         btnText: 'New Game',
         ourClass: ['menu__button'],

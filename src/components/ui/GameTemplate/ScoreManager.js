@@ -45,6 +45,9 @@ export default class ScoreManager extends Component {
 
     this.appendChildren([currentMode, currentScore, currentTime]);
 
+    emitter.on('mode:update', (mode) => {
+      this.updateModeText(mode, currentMode.node);
+    });
     emitter.on('score:change', (score) => {
       this.updateScore(score, currentScore.node);
     });
@@ -55,5 +58,9 @@ export default class ScoreManager extends Component {
   }
   updateScore(score, text) {
     text.textContent = `Score: ${score} / 100`;
+  }
+  updateModeText(mode, text) {
+    const capitalized = mode.charAt(0).toUpperCase() + mode.slice(1);
+    text.textContent = `${capitalized} Mode`;
   }
 }

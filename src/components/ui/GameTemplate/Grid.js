@@ -1,7 +1,9 @@
 import Component from '../../../utils/Component';
 import { appEmitter, emitter } from '../../../utils/emmiter';
+import gameStorage from '../../../utils/gameStorage';
+
 import Cell from './Cell';
-import { shuffleArr } from '../../../utils/random';
+import { getRandomInt, shuffleArr } from '../../../utils/random';
 import { timerData } from './ScoreManager';
 
 export default class Grid extends Component {
@@ -10,7 +12,7 @@ export default class Grid extends Component {
       className: 'game__grid',
     });
 
-    this.mode = 'classic';
+    this.mode = gameStorage.getSetting('mode');
     this.cells = [];
     this.score = 0;
     this.tools = {
@@ -34,9 +36,8 @@ export default class Grid extends Component {
       this.calculateAvailableMoves();
     }, 100);
 
-    appEmitter.on('modeSwitch', (mode) => {
-      this.mode = mode;
-    });
+    emitter.emit('mode:update', this.mode);
+
     emitter.on('cellClick', (cell) => {
       this.selectCard(cell);
     });
@@ -240,7 +241,19 @@ export default class Grid extends Component {
 
     this.saveGrid();
     this.saveTools();
-    const toAdd = this.cells.filter((cell) => cell.value).map((cell) => cell.value);
+
+    let toAdd = this.cells.filter((cell) => cell.value).map((cell) => cell.value);
+    switch (this.mode) {
+      case 'random':
+        shuffleArr(toAdd);
+        break;
+      case 'chaotic':
+        toAdd = Array.from({ length: toAdd.length }, () => getRandomInt(1, 9));
+        break;
+      default:
+        break;
+    }
+
     const startIndex = this.cells.length;
     this.createGrid(toAdd, startIndex);
 

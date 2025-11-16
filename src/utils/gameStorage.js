@@ -29,12 +29,21 @@ class GameStorage {
     localStorage.setItem(this.key, JSON.stringify(this.data));
   }
 
-  getSettings() {
-    return this.data.settings;
+  getSetting(key) {
+    return this.data.settings[key];
   }
 
-  setSettings(key, value) {
+  setSetting(key, value) {
     this.data.settings[key] = value;
+    this.saveData();
+  }
+
+  getCurrentSave() {
+    return this.data.currentSave;
+  }
+
+  updateCurrentSave(update) {
+    this.data.currentSave = { ...update };
     this.saveData();
   }
 
