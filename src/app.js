@@ -8,15 +8,22 @@ export default class App {
   constructor() {
     this.currentScreen = null;
 
-    appEmitter.on('showScreen', (data) => this.showScreen(data));
+    appEmitter.on('showScreen', (screen) => {
+      this.showScreen(screen);
+    });
     appEmitter.on('modeSwitch', (mode) => {
       gameStorage.setSetting('mode', mode);
     });
+    appEmitter.on('game:save', (data) => {
+      gameStorage.updateCurrentSave(data);
+    });
+    appEmitter.on('game:continue', (options) => {
+      this.showScreen('game', options);
+    });
   }
 
-  showScreen(screen) {
-    console.log(appEmitter);
-    if (this.currentScreen === screen) return;
+  showScreen(screen, options = null) {
+    if (this.currentScreen === screen && !options) return;
 
     if (this.currentScreen) {
       document.querySelector('.container').remove();
@@ -36,11 +43,10 @@ export default class App {
     if (screen === 'game') {
       emitter.clear();
 
-      const game = new Game();
+      const game = new Game(options);
       game.render();
       document.body.append(game.node);
     }
-
     this.currentScreen = screen;
   }
 }

@@ -109,10 +109,68 @@
     inset 0 0 3px 3px rgba(255, 255, 255, 0.158);
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   @include fluid(padding, 10, 15);
-  @include fluid(border-radius, 15, 25);
+  @include fluid(border-radius, 25, 25);
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.game__controls {
+  width: 55%;
+  display: flex;
+  gap: 5px;
+
+  @media (max-width: 900px) {
+    order: 2;
+  }
+}
+.game__control-btn {
+  @extend %glass-base;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  background: rgba(231, 231, 231, 0.07);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.233),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 3px 3px rgba(255, 255, 255, 0.158);
+  width: 100%;
+  padding: 0 3px;
+  @include fluid(height, 30, 55);
+  @include fluid(border-radius, 10, 20);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 0.9rem;
+  transition: all 0.5s;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.settings-btn {
+  width: 65%;
+  font-size: 1.1rem;
 }
 
 .panel__tools-wrapper {

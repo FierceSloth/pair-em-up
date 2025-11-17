@@ -7,36 +7,14 @@ import { getRandomInt, shuffleArr } from '../../../utils/random';
 import { timerData } from './ScoreManager';
 
 export default class Grid extends Component {
-  constructor() {
+  constructor(options = null) {
     super({
       className: 'game__grid',
     });
 
-    this.mode = gameStorage.getSetting('mode');
-    this.cells = [];
-    this.score = 0;
-    this.tools = {
-      add: 10,
-      hinits: 5,
-      shuffle: 5,
-      eraser: 5,
-    };
-
     this.firstCard = null;
     this.secondCard = null;
     this.isUndoUsed = false;
-
-    this.history = {
-      grid: [],
-      tools: [],
-      score: [0],
-    };
-
-    setTimeout(() => {
-      this.calculateAvailableMoves();
-    }, 100);
-
-    emitter.emit('mode:update', this.mode);
 
     emitter.on('cellClick', (cell) => {
       this.selectCard(cell);
@@ -56,6 +34,50 @@ export default class Grid extends Component {
     emitter.on('tools:eraser', () => {
       this.toolsEraser();
     });
+
+    if (options) {
+      this.mode = options.mode;
+      this.tools = structuredClone(options.tools);
+      this.history = structuredClone(options.history);
+      this.score = options.score;
+
+      timerData.minutes = options.minutes;
+      timerData.seconds = options.seconds;
+      emitter.emit('score:change', this.score);
+
+      this.cells = [];
+
+      emitter.emit('mode:update', this.mode);
+
+      setTimeout(() => {
+        this.calculateAvailableMoves();
+        this.updateButtons();
+      }, 100);
+
+      return;
+    }
+
+    this.mode = gameStorage.getSetting('mode');
+    this.cells = [];
+    this.score = 0;
+    this.tools = {
+      add: 10,
+      hinits: 5,
+      shuffle: 5,
+      eraser: 5,
+    };
+
+    this.history = {
+      grid: [],
+      tools: [],
+      score: [0],
+    };
+
+    setTimeout(() => {
+      this.calculateAvailableMoves();
+    }, 100);
+
+    emitter.emit('mode:update', this.mode);
   }
 
   //* ============ Basic cards methods =============
@@ -379,14 +401,16 @@ export default class Grid extends Component {
   }
 
   getGameState() {
-    const { mode, cells, history, tools } = this;
+    const copyCells = this.cells.map((cell) => cell.value);
+    const { mode, history, tools, score } = this;
     const { minutes, seconds } = timerData;
 
     return {
       mode,
-      cells,
+      copyCells,
       history,
       tools,
+      score,
       minutes,
       seconds,
     };

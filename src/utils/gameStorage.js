@@ -43,7 +43,10 @@ class GameStorage {
   }
 
   updateCurrentSave(update) {
-    this.data.currentSave = { ...update };
+    this.data.currentSave = {
+      ...this.data.currentSave,
+      ...update,
+    };
     this.saveData();
   }
 

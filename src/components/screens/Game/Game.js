@@ -5,10 +5,11 @@ import Button from '../../ui/Button/Button';
 import GameTemplate from '../../ui/GameTemplate/GameTemplate';
 
 export default class Game extends Component {
-  constructor() {
+  constructor(options = null) {
     super({
       className: ['container', 'container__game'],
     });
+    this.options = options;
   }
 
   render() {
@@ -21,7 +22,8 @@ export default class Game extends Component {
       btnText: 'Go Back',
       onClick: () => appEmitter.emit('showScreen', 'menu'),
     });
-    const gameTemplate = new GameTemplate();
+
+    let gameTemplate = new GameTemplate(this.options);
 
     this.appendChildren([gameTitle, backBtn, gameTemplate]);
   }
