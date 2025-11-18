@@ -14,7 +14,9 @@ class GameStorage {
       settings: {
         mode: 'classic',
         audioEnabled: true,
-        theme: 'dark',
+        theme: 'light',
+        uiVolume: 50,
+        musicVolume: 50,
       },
       currentSave: null,
       lastResult: [],

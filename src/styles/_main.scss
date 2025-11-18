@@ -4,31 +4,50 @@ html {
   @include fluid(font-size, 12, 18);
 }
 
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.15), transparent 70%),
-    radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.164), transparent 65%),
-    radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.34), transparent 60%),
-    radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.15), transparent 75%),
-    radial-gradient(circle at 0% 100%, rgb(0, 0, 0), transparent 85%),
-    radial-gradient(circle at 100% 0%, rgb(0, 0, 0), transparent 85%), linear-gradient(155deg, #010105 0%, #03040c 100%);
-
-  background:
-    radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.5), transparent 70%),
-    radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.45), transparent 65%),
-    radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.5), transparent 60%),
-    radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.4), transparent 75%), #ffffff;
-
-  background: url(/image/aaabstract2.jpg);
-  background: url(/svg/ffflux2.svg);
+%bg-common {
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
   color: #ffffff;
 
-  font-family: 'Inter', sans-serif;
+  &.light {
+    @extend %bg-common;
+    background-image:
+      radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.5), transparent 70%),
+      radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.45), transparent 65%),
+      radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.5), transparent 60%),
+      radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.4), transparent 75%);
+    background-color: #ffffff;
+  }
+  &.dark {
+    @extend %bg-common;
+    background-image:
+      radial-gradient(circle farthest-corner at 5% 5%, rgba(56, 22, 247, 0.15), transparent 70%),
+      radial-gradient(circle at 60% 40%, rgba(212, 0, 255, 0.164), transparent 65%),
+      radial-gradient(circle at 80% 90%, rgba(30, 154, 255, 0.34), transparent 60%),
+      radial-gradient(circle at 20% 70%, rgba(9, 202, 236, 0.15), transparent 75%),
+      radial-gradient(circle at 0% 100%, rgb(0, 0, 0), transparent 85%),
+      radial-gradient(circle at 100% 0%, rgb(0, 0, 0), transparent 85%),
+      linear-gradient(155deg, #010105 0%, #03040c 100%);
+  }
+  &.abstract-light {
+    @extend %bg-common;
+    background-image: url(/svg/light-2.svg);
+  }
+  &.abstract-dark {
+    @extend %bg-common;
+    background-image: url(/image/abstract.jpg);
+  }
+  &.abstract-neon {
+    @extend %bg-common;
+    background-image: url(/image/abstract2.jpg);
+  }
 }
 
 .container {

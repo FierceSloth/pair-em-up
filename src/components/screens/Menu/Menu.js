@@ -3,7 +3,7 @@ import { appEmitter } from '../../../utils/emmiter';
 import gameStorage from '../../../utils/gameStorage';
 
 import Button from '../../ui/Button/Button';
-import Popup from '../../ui/Popup/Popup';
+import SettingsPopup from '../../ui/SettingsPopup/SettingsPopup';
 
 export default class Menu extends Component {
   constructor() {
@@ -21,9 +21,7 @@ export default class Menu extends Component {
 
     // =============== PopUp ===================
 
-    const settingsPopup = new Popup({
-      className: 'settings__popup',
-    });
+    const settingsPopup = new SettingsPopup();
 
     // =============== Mode Buttons ===================
 

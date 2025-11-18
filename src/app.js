@@ -7,6 +7,10 @@ import Game from './components/screens/Game/Game';
 export default class App {
   constructor() {
     this.currentScreen = null;
+    const body = document.body;
+
+    const theme = gameStorage.getSetting('theme') ?? 'light';
+    body.classList.add(theme);
 
     appEmitter.on('showScreen', (screen) => {
       this.showScreen(screen);
@@ -20,11 +24,21 @@ export default class App {
     appEmitter.on('game:continue', (options) => {
       this.showScreen('game', options);
     });
+    // appEmitter.on('settings:ui-volume-change', (value) => {
+    //   TODO: add music to game
+    // })
+    // appEmitter.on('settings:music-volume-change', (value) => {
+    //   TODO: add music to game
+    // })
+    appEmitter.on('settings:theme-change', ({ theme, themeValues }) => {
+      themeValues.forEach((value) => {
+        body.classList.remove(value);
+      });
+      body.classList.add(theme);
+    });
   }
 
   showScreen(screen, options = null) {
-    if (this.currentScreen === screen && !options) return;
-
     if (this.currentScreen) {
       document.querySelector('.container').remove();
       document.querySelectorAll('.popup--overlay').forEach((el) => el.remove());

@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import Grid from './Grid';
 import ScoreManager from './ScoreManager';
 import ToolsManager from '../../ui/GameTemplate/ToolsManager';
+import SettingsPopup from '../SettingsPopup/SettingsPopup';
 
 const CLASSIC_GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 1, 9];
 const RANDOM_GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9, [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]];
@@ -55,12 +56,13 @@ export default class GameTemplate extends Component {
     }
 
     //* =========== Game Panel =============
+    const settingsPopup = new SettingsPopup(true);
 
     const savedGame = gameStorage.getCurrentSave();
     const settingsBtn = new Button({
       btnText: '⚙️',
       ourClass: ['game__control-btn', 'settings-btn'],
-      // onClick: () => emitter.emit('game:settings', ''),
+      onClick: () => settingsPopup.open(),
     });
     const resetBtn = new Button({
       btnText: 'Reset',
