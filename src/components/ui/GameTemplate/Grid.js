@@ -5,6 +5,7 @@ import gameStorage from '../../../utils/gameStorage';
 import Cell from './Cell';
 import { getRandomInt, shuffleArr } from '../../../utils/random';
 import { timerData } from './ScoreManager';
+import GameOverPopup from '../GameOverPopup/GameOverPopup';
 
 export default class Grid extends Component {
   constructor(options = null) {
@@ -196,8 +197,10 @@ export default class Grid extends Component {
     const activeCell = this.cells.filter((cell) => !cell.isDeleted);
 
     if (activeCell.length === 0 || this.score >= 100) {
-      appEmitter.emit('game:win', this.getGameState());
-      console.log('win');
+      const gameState = this.getGameState();
+      const winPopup = new GameOverPopup('win', gameState);
+      appEmitter.emit('game:win', gameState);
+      winPopup.open();
       return true;
     }
 
@@ -205,8 +208,10 @@ export default class Grid extends Component {
     const limitResult = this.cells.length > 50 * 9;
 
     if (movesResult || limitResult) {
-      appEmitter.emit('game:loss', this.getGameState());
-      console.log('lose');
+      const gameState = this.getGameState();
+      const losePopup = new GameOverPopup('lose', gameState);
+      appEmitter.emit('game:lose', gameState);
+      losePopup.open();
       return false;
     }
   }

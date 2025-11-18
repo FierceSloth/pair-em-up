@@ -48,6 +48,9 @@ body {
     @extend %bg-common;
     background-image: url(/image/abstract2.jpg);
   }
+  &.hide {
+    overflow: hidden;
+  }
 }
 
 .container {

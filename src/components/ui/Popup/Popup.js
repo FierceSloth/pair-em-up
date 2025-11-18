@@ -39,12 +39,14 @@ export default class Popup extends Component {
   }
 
   open() {
+    document.body.classList.add('hide');
     this.addClass('popup--open');
     this.popup.addClass('popup--open');
   }
 
   close() {
     if (!this.canClosed) return;
+    document.body.classList.remove('hide');
     this.removeClass('popup--open');
     this.popup.removeClass('popup--open');
   }
