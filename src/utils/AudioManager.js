@@ -46,7 +46,7 @@ export default class AudioManager {
     const gameWin = new AudioCls({ src: './sounds/game-win.wav', type: 'ui' });
     const gameLose = new AudioCls({ src: './sounds/game-lose.mp3', type: 'ui' });
 
-    const music = new AudioCls({ src: '/sounds/music.wav', type: 'music' });
+    const music = new AudioCls({ src: './sounds/music.wav', type: 'music' });
 
     appEmitter.on('music:play', () => {
       music.play();
