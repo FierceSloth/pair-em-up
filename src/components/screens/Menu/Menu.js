@@ -97,7 +97,11 @@ export default class Menu extends Component {
         ourClass: ['menu__button'],
         onClick: () => settingsPopup.open(),
       }),
-      new Button({ btnText: 'Results', ourClass: ['menu__button'] }),
+      new Button({
+        btnText: 'Developer',
+        ourClass: ['menu__button'],
+        onClick: () => window.open('https://github.com/FierceSloth', '_blank'),
+      }),
     ]);
 
     // =============== Github ===================

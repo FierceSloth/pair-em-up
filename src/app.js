@@ -3,11 +3,13 @@ import gameStorage from './utils/gameStorage';
 
 import Menu from './components/screens/Menu/Menu';
 import Game from './components/screens/Game/Game';
+import AudioManager from './utils/AudioManager';
 
 export default class App {
   constructor() {
     this.currentScreen = null;
     const body = document.body;
+    new AudioManager();
 
     const theme = gameStorage.getSetting('theme') ?? 'light';
     body.classList.add(theme);
@@ -24,12 +26,15 @@ export default class App {
     appEmitter.on('game:continue', (options) => {
       this.showScreen('game', options);
     });
-    // appEmitter.on('settings:ui-volume-change', (value) => {
-    //   TODO: add music to game
-    // })
-    // appEmitter.on('settings:music-volume-change', (value) => {
-    //   TODO: add music to game
-    // })
+    // appEmitter.on('game:end', (options) => {
+    //   gameStorage.pushLastResult(options);
+    // });
+    appEmitter.on('settings:ui-volume-change', (value) => {
+      gameStorage.setSetting('uiVolume', value);
+    });
+    appEmitter.on('settings:music-volume-change', (value) => {
+      gameStorage.setSetting('musicVolume', value);
+    });
     appEmitter.on('settings:theme-change', ({ theme, themeValues }) => {
       themeValues.forEach((value) => {
         body.classList.remove(value);
@@ -49,6 +54,7 @@ export default class App {
     if (screen === 'menu') {
       emitter.clear();
 
+      appEmitter.emit('music:stop', '');
       const menu = new Menu();
       menu.render();
       document.body.append(menu.node);
@@ -57,6 +63,7 @@ export default class App {
     if (screen === 'game') {
       emitter.clear();
 
+      appEmitter.emit('music:play', '');
       const game = new Game(options);
       game.render();
       document.body.append(game.node);

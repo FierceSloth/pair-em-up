@@ -11,26 +11,32 @@ export default class ToolsManager extends Component {
 
     const movesBtn = new Button({
       btnText: 'Moves',
+      removeSound: true,
     });
     const undoBtn = new Button({
       btnText: 'Revert',
       onClick: () => emitter.emit('tools:undo', ''),
+      removeSound: true,
     });
     const addBtn = new Button({
       btnText: 'Add (10)',
       onClick: () => emitter.emit('tools:add', ''),
+      removeSound: true,
     });
     const hinitsBtn = new Button({
       btnText: 'Hinits (5)',
       onClick: () => emitter.emit('tools:hinits', ''),
+      removeSound: true,
     });
     const shuffleBtn = new Button({
       btnText: 'Shuffle (5)',
       onClick: () => emitter.emit('tools:shuffle', ''),
+      removeSound: true,
     });
     const eraserBtn = new Button({
       btnText: 'Eraser (5)',
       onClick: () => emitter.emit('tools:eraser', ''),
+      removeSound: true,
     });
 
     eraserBtn.node.disabled = true;

@@ -16,7 +16,7 @@ class GameStorage {
         audioEnabled: true,
         theme: 'light',
         uiVolume: 50,
-        musicVolume: 50,
+        musicVolume: 30,
       },
       currentSave: null,
       lastResult: [],
@@ -49,6 +49,17 @@ class GameStorage {
       ...this.data.currentSave,
       ...update,
     };
+    this.saveData();
+  }
+
+  getLastResult() {
+    return this.data.lastResult;
+  }
+
+  pushLastResult(update) {
+    let lastResult = this.data.lastResult;
+    if (lastResult.length >= 5) this.data.lastResult.shift();
+    this.data.lastResult.push(update);
     this.saveData();
   }
 

@@ -96,6 +96,7 @@ export default class Grid extends Component {
     }
 
     if (!this.firstCard) {
+      appEmitter.emit('ui:cellSelect', '');
       this.firstCard = cell;
       cell.addClass('cell--active');
       emitter.emit('card:selected', '');
@@ -121,6 +122,7 @@ export default class Grid extends Component {
       this.score += valueResult;
       emitter.emit('score:change', this.score);
 
+      appEmitter.emit('ui:cellsMatch', '');
       first.deleteCell();
       second.deleteCell();
 
@@ -131,6 +133,7 @@ export default class Grid extends Component {
       return true;
     }
 
+    appEmitter.emit('ui:cellsError', '');
     this.triggerAnimation(this.firstCard, 'cell--error');
     this.triggerAnimation(this.secondCard, 'cell--error');
 
@@ -199,7 +202,8 @@ export default class Grid extends Component {
     if (activeCell.length === 0 || this.score >= 100) {
       const gameState = this.getGameState();
       const winPopup = new GameOverPopup('win', gameState);
-      appEmitter.emit('game:win', gameState);
+      appEmitter.emit('ui:gameWin', '');
+      appEmitter.emit('game:end', gameState);
       winPopup.open();
       return true;
     }
@@ -210,7 +214,8 @@ export default class Grid extends Component {
     if (movesResult || limitResult) {
       const gameState = this.getGameState();
       const losePopup = new GameOverPopup('lose', gameState);
-      appEmitter.emit('game:lose', gameState);
+      appEmitter.emit('ui:gameLose', '');
+      appEmitter.emit('game:end', gameState);
       losePopup.open();
       return false;
     }
@@ -254,6 +259,7 @@ export default class Grid extends Component {
     this.score = this.history.score.pop();
     emitter.emit('score:change', this.score);
 
+    appEmitter.emit('ui:toolsClick', '');
     this.removeGrid();
     this.resetActiveCards();
     this.createGrid(this.history.grid.pop());
@@ -284,6 +290,7 @@ export default class Grid extends Component {
     const startIndex = this.cells.length;
     this.createGrid(toAdd, startIndex);
 
+    appEmitter.emit('ui:toolsClick', '');
     this.tools.add -= 1;
     this.updateButtons();
     this.calculateAvailableMoves();
@@ -298,6 +305,7 @@ export default class Grid extends Component {
     const hint = this.calculateAvailableMoves(true);
 
     if (hint) {
+      appEmitter.emit('ui:toolHinits', '');
       hint.first.addClass('cell--hinits');
       hint.second.addClass('cell--hinits');
 
@@ -318,6 +326,7 @@ export default class Grid extends Component {
 
     this.saveGrid();
     this.saveTools();
+    appEmitter.emit('ui:toolsClick', '');
     const nonNullCells = this.cells.filter((cell) => cell.value !== null);
     const nonNullValues = nonNullCells.map((cell) => cell.value);
     shuffleArr(nonNullValues);
@@ -349,6 +358,7 @@ export default class Grid extends Component {
     }
 
     if (this.firstCard) {
+      appEmitter.emit('ui:toolsClick', '');
       this.saveGrid();
       this.saveTools();
 

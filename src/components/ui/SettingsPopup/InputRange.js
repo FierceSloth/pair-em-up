@@ -1,7 +1,7 @@
 import Component from '../../../utils/Component';
 
 export default class InputRange extends Component {
-  constructor({ labelText = 'Value' }) {
+  constructor({ labelText = 'Value', value = 50 }) {
     super({
       tag: 'label',
       className: 'input__label',
@@ -15,7 +15,7 @@ export default class InputRange extends Component {
     this.input.setAttribute('max', '100');
     this.input.setAttribute('min', '0');
     this.input.setAttribute('step', '1');
-    this.input.setAttribute('value', '50');
+    this.input.setAttribute('value', value);
 
     this.append(this.input);
   }

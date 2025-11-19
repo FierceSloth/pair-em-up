@@ -4,6 +4,7 @@ import { appEmitter } from '../../../utils/emmiter';
 import ThemeSelect from './ThemeSelect';
 import InputRange from './InputRange';
 import Button from '../Button/Button';
+import gameStorage from '../../../utils/gameStorage';
 
 export default class SettingsPopup extends Popup {
   constructor(withBackBtn = false) {
@@ -12,11 +13,14 @@ export default class SettingsPopup extends Popup {
     });
 
     const themeSelect = new ThemeSelect();
-    const uiVolume = new InputRange({ labelText: 'UI Sounds Volume' });
+    const uiVolume = new InputRange({ labelText: 'UI Sounds Volume', value: gameStorage.getSetting('uiVolume') });
     uiVolume.input.addListener('input', (e) => {
       appEmitter.emit('settings:ui-volume-change', e.target.value);
     });
-    const musicVolume = new InputRange({ labelText: 'Music Sound Volume' });
+    const musicVolume = new InputRange({
+      labelText: 'Music Sound Volume',
+      value: gameStorage.getSetting('musicVolume'),
+    });
     musicVolume.input.addListener('input', (e) => {
       appEmitter.emit('settings:music-volume-change', e.target.value);
     });
