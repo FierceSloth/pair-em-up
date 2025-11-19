@@ -6,7 +6,8 @@ class AudioCls {
     this.src = src;
     this.type = type;
     this.audio = new Audio(src);
-    this.audio.volume = gameStorage.getSetting(type + 'Volume') * 0.01;
+    const volume = gameStorage.getSetting(type + 'Volume') ?? 50;
+    this.audio.volume = volume * 0.01;
 
     appEmitter.on('settings:' + type + '-volume-change', (v) => {
       this.audio.volume = v * 0.01;
