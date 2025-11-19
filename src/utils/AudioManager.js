@@ -37,14 +37,14 @@ class AudioCls {
 
 export default class AudioManager {
   constructor() {
-    const btnClick = new AudioCls({ src: '/sounds/btn-click.wav', type: 'ui' });
-    const cellSelect = new AudioCls({ src: '/sounds/cell-click.wav', type: 'ui' });
-    const cellsError = new AudioCls({ src: '/sounds/cells-error.wav', type: 'ui' });
-    const cellsMatch = new AudioCls({ src: '/sounds/cells-match.wav', type: 'ui' });
-    const toolsClick = new AudioCls({ src: '/sounds/tools-click.wav', type: 'ui' });
-    const toolHinits = new AudioCls({ src: '/sounds/tool-hinits.wav', type: 'ui' });
-    const gameWin = new AudioCls({ src: '/sounds/game-win.wav', type: 'ui' });
-    const gameLose = new AudioCls({ src: '/sounds/game-lose.mp3', type: 'ui' });
+    const btnClick = new AudioCls({ src: './sounds/btn-click.wav', type: 'ui' });
+    const cellSelect = new AudioCls({ src: './sounds/cell-click.wav', type: 'ui' });
+    const cellsError = new AudioCls({ src: './sounds/cells-error.wav', type: 'ui' });
+    const cellsMatch = new AudioCls({ src: './sounds/cells-match.wav', type: 'ui' });
+    const toolsClick = new AudioCls({ src: './sounds/tools-click.wav', type: 'ui' });
+    const toolHinits = new AudioCls({ src: './sounds/tool-hinits.wav', type: 'ui' });
+    const gameWin = new AudioCls({ src: './sounds/game-win.wav', type: 'ui' });
+    const gameLose = new AudioCls({ src: './sounds/game-lose.mp3', type: 'ui' });
 
     const music = new AudioCls({ src: '/sounds/music.wav', type: 'music' });
 
